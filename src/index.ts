@@ -1,14 +1,14 @@
 import express from 'express';
+import cors from "cors";
 import bodyParser from "body-parser";
-
-const cors = require("cors");
-const messages = require('./routes/messages');
+import {createMessageRoute} from "./routes/messages";
+import {listenToWebsocketConnection} from "./connections/socketConnection";
 
 const app = express();
 const server = require('http').createServer(app);
 const websocketServer = require('socket.io')(server);
 
-require('./connections/socketConnection')(websocketServer);
+listenToWebsocketConnection(websocketServer);
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/api/messages', messages);
+app.use('/api/messages', createMessageRoute);
 
 const applicationPort = 8082;
 app.listen(applicationPort,

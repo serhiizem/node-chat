@@ -1,10 +1,10 @@
-const appRoot = require('app-root-path');
-const { createLogger, transports } = require('winston');
+import * as rootPath from "app-root-path";
+import {createLogger, transports} from "winston";
 
 const options = {
     file: {
         level: 'info',
-        filename: `${appRoot}/logs/app.log`,
+        filename: `${rootPath}/logs/app.log`,
         handleExceptions: true,
         json: true,
         maxsize: 5242880,
@@ -19,12 +19,10 @@ const options = {
     },
 };
 
-const logger = new createLogger({
+export const logger = new createLogger({
     transports: [
         new transports.File(options.file),
         new transports.Console(options.console)
     ],
     exitOnError: false
 });
-
-module.exports = logger;

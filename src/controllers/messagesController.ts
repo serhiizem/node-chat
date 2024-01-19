@@ -1,6 +1,6 @@
-const logger = require("../utils/logger");
+import {logger} from "../utils/logger";
 
-exports.messageCreate = (req, res, next) => {
+export const createMessage = (req, res, next) => {
     saveMessage(req);
 };
 

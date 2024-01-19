@@ -1,10 +1,6 @@
 import {Router} from "express";
+import {createMessage} from "../controllers/messagesController"
 
-const express = require('express');
+const router: Router = Router();
 
-const router: Router = express.Router();
-const messagesController = require('../controllers/messagesController');
-
-router.post('/', messagesController.messageCreate);
-
-module.exports = router;
+export const createMessageRoute = router.post('/', createMessage);
