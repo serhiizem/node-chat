@@ -1,10 +1,14 @@
 import express from 'express';
-import {helloHandler, rootHandler} from './handlers';
+const messages = require('./routes/messages');
 
 const app = express();
-const port = process.env.PORT || '8000';
+const server = require('http').createServer(app);
+const websocketServer = require('socket.io')(server);
 
-app.get('/', rootHandler);
-app.get('/hello/:name', helloHandler);
+require('./connections/socketConnection')(websocketServer);
 
-app.listen(port, () => console.log(`Server is listening on ${port}`));
+app.use('/api/messages', messages);
+
+const applicationPort = 8082;
+app.listen(applicationPort,
+    () => console.log(`Chat App is listening on port ${applicationPort}`));
