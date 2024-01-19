@@ -7,7 +7,9 @@ export const App = () => {
     const [message, setMessage] = useState("");
 
     return (
-        <Box>
+        <Box sx={{
+            padding: "20rem"
+        }}>
             <TextField label="Message" variant="outlined" onChange={e => setMessage(e.target.value)} />
             <Button onClick={() => sendMessage(message).then(_ => setMessage(""))}>
                 Send
