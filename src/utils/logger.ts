@@ -19,7 +19,7 @@ const options = {
     },
 };
 
-export const logger = new createLogger({
+export const logger = createLogger({
     transports: [
         new transports.File(options.file),
         new transports.Console(options.console)
