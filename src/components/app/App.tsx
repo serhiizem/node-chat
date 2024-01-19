@@ -1,10 +1,15 @@
-import React from 'react';
-import {Box, TextField} from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Button, TextField} from "@mui/material";
+import { sendMessage } from "../../api/messagesApi"
 
 export const App = () => {
+
+    const [message, setMessage] = useState("");
+
     return (
         <Box>
-            <TextField label="Required"/>
+            <TextField label="Message" variant="outlined" onChange={e => setMessage(e.target.value)} />
+            <Button onClick={() => sendMessage(message)}>Send</Button>
         </Box>
     );
 }
