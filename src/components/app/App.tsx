@@ -9,7 +9,9 @@ export const App = () => {
     return (
         <Box>
             <TextField label="Message" variant="outlined" onChange={e => setMessage(e.target.value)} />
-            <Button onClick={() => sendMessage(message)}>Send</Button>
+            <Button onClick={() => sendMessage(message).then(_ => setMessage(""))}>
+                Send
+            </Button>
         </Box>
     );
 }
