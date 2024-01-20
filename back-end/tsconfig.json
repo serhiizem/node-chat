@@ -6,7 +6,7 @@
     "noImplicitAny": false
   },
   "include": [
-    "src/**/*"
+    "back-end/src/**/*"
   ],
   "exclude": [
     "**/*.spec.ts"

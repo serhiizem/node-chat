@@ -4,7 +4,7 @@
 **/**/dist/
 
 **/**/build/
-.idea
+../.idea
 **/**/uploads/
 
 **/**/logs/**
