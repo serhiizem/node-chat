@@ -9,7 +9,10 @@ export const App = () => {
     const [chatMessages, setChatMessages] = useState<string[]>([]);
 
     useEffect(() => {
-        socket.on('message', message => setChatMessages(prevState => [...prevState, message]));
+        socket.on("message", message => setChatMessages(prevState => [...prevState, message]));
+        return () => {
+            socket.off("message").off();
+        }
     }, []);
 
     return (
