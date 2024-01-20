@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import {createMessageRoute} from "./routes/messages";
 import {listenToWebsocketConnection} from "./connections/socketConnection";
+import {appConfig} from "./utils/config";
 
 const app = express();
 const server = require('http').createServer(app);
@@ -24,6 +25,6 @@ app.use(cors());
 
 app.use('/api/messages', createMessageRoute);
 
-const applicationPort = 8082;
+const applicationPort = appConfig.port;
 server.listen(applicationPort,
     () => console.log(`Chat App is listening on port ${applicationPort}`));
