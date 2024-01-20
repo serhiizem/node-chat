@@ -1,3 +1,7 @@
 {
-  "port": 8082
+  "port": 8082,
+  "mongoDbConfig": {
+    "dbName": "chat_db",
+    "host": "localhost:27017"
+  }
 }

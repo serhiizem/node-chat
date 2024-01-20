@@ -3,7 +3,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import {createMessageRoute} from "./routes/messages";
 import {listenToWebsocketConnection} from "./connections/socketConnection";
-import {appConfig} from "./utils/config";
+import {appConfig} from "./utils/appConfig";
+import {connectDb} from "./connections/dbConnection";
+import {logger} from "./utils/logger";
 
 const app = express();
 const server = require('http').createServer(app);
@@ -17,6 +19,8 @@ const websocketServer = require('socket.io')(server, {
 listenToWebsocketConnection(websocketServer);
 app.set('websocketServer', websocketServer);
 
+connectDb();
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -27,4 +31,4 @@ app.use('/api/messages', createMessageRoute);
 
 const applicationPort = appConfig.port;
 server.listen(applicationPort,
-    () => console.log(`Chat App is listening on port ${applicationPort}`));
+    () => logger.info(`Chat App is listening on port ${applicationPort}`));
