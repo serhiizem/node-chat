@@ -1,4 +1,4 @@
-import {axiosInstance as axios} from "./axiosApi";
+import {axiosInstance as axios} from "./apiClient";
 
 const baseUrl = "/api/messages";
 

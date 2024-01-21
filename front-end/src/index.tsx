@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import {App} from "./components/app/App";
+import {Sidebar} from "./components/Sidebar/Sidebar";
+import {ThemeProvider} from "@mui/material";
+import {theme} from "./theme/theme";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -10,7 +12,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <App/>
+        <ThemeProvider theme={theme}>
+            <Sidebar/>
+        </ThemeProvider>
     </React.StrictMode>
 );
 
