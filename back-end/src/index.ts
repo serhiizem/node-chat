@@ -1,15 +1,17 @@
-import express from 'express';
+import express, {Express} from 'express';
 import cors from "cors";
 import bodyParser from "body-parser";
-import {createMessageRoute} from "./routes/messages";
+import {router as messagesRouter} from "./routes/messages";
 import {listenToWebsocketConnection} from "./connections/socketConnection";
 import {appConfig} from "./utils/appConfig";
 import {connectDb} from "./connections/dbConnection";
 import {logger} from "./utils/logger";
+import * as websocket from "socket.io";
+import * as http from "http";
 
-const app = express();
-const server = require('http').createServer(app);
-const websocketServer = require('socket.io')(server, {
+const app: Express = express();
+const httpServer: http.Server = require('http').createServer(app);
+const websocketServer: websocket.Server = require('socket.io')(httpServer, {
     cors: {
         origin: "http://localhost:3000",
         methods: ["GET", "POST"]
@@ -27,8 +29,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/api/messages', createMessageRoute);
+app.use('/api/messages', messagesRouter);
 
 const applicationPort = appConfig.port;
-server.listen(applicationPort,
+httpServer.listen(applicationPort,
     () => logger.info(`Chat App is listening on port ${applicationPort}`));
