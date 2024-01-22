@@ -1,34 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Button, TextField, Typography} from "@mui/material";
-import {sendMessage} from "../../api/messagesApi"
-import {socket} from "../../api/socket";
+import React from 'react';
+import {Box, CssBaseline} from "@mui/material";
+import {Main} from "./components/Main";
+import {Sidebar} from "./components/Sidebar";
+import {ToolBar} from "./components/ToolBar";
 
-export const App = () => {
+export const App: React.FC = () => {
 
-    const [message, setMessage] = useState("");
-    const [chatMessages, setChatMessages] = useState<string[]>([]);
+    const [open, setOpen] = React.useState(true);
 
-    useEffect(() => {
-        socket.on("message", message => setChatMessages(prevState => [...prevState, message]));
-        return () => {
-            socket.off("message").off();
-        }
-    }, []);
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     return (
-        <Box sx={{
-            padding: "20rem"
-        }}>
-            <TextField label="Message"
-                       variant="outlined"
-                       value={message}
-                       onChange={e => setMessage(e.target.value)}
+        <Box sx={{display: 'flex'}}>
+            <CssBaseline/>
+            <ToolBar
+                open={open}
+                handleDrawerOpen={handleDrawerOpen}
             />
-            <Button onClick={() => sendMessage(message).then(_ => setMessage(""))}>
-                Send
-            </Button>
-
-            {chatMessages.map((m, idx) => <Typography key={idx}>{m}</Typography>)}
+            <Sidebar
+                open={open}
+                handleDrawerClose={handleDrawerClose}
+            />
+            <Main open={open}></Main>
         </Box>
     );
 }
