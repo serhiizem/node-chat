@@ -3,5 +3,11 @@
   "mongoDbConfig": {
     "dbName": "chat_db",
     "host": "localhost:27017"
+  },
+  "authSettings": {
+    "secretOrKey": "chat_secret"
+  },
+  "passwordSettings": {
+    "saltRounds": 10
   }
 }
