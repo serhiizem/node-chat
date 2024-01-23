@@ -4,7 +4,7 @@ import {Main} from "./components/Main";
 import {Sidebar} from "./components/Sidebar";
 import {ToolBar} from "./components/ToolBar";
 
-export const App: React.FC = () => {
+export const Chat: React.FC = () => {
 
     const [open, setOpen] = React.useState(true);
 
