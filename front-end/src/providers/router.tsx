@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
     {
         path: "/chat",
         element: (
-            <RequireAuth fallbackPath={'/login'}>
+            <RequireAuth fallbackPath={"/login"}>
                 <Chat/>
             </RequireAuth>
         )

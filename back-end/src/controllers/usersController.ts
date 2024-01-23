@@ -4,13 +4,11 @@ import jwt from "jsonwebtoken";
 import {appConfig} from "../utils/appConfig";
 
 export const loginUser = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
-
+    const {email, password} = req.body;
     User.findOne({email})
         .then((user) => {
             if (user === null) {
-                return res.status(500).send({message: 'User not found'});
+                return res.status(500).send({message: "User not found"});
             }
             const encryptedPassword = user.password as string;
             bcrypt.compare(password, encryptedPassword, (error, result) => {
@@ -24,7 +22,7 @@ export const loginUser = (req, res, next) => {
 
                     res.json(response)
                 } else {
-                    return res.status(500).send({message: 'Wrong credentials'});
+                    return res.status(500).send({message: "Wrong credentials"});
                 }
             })
         })

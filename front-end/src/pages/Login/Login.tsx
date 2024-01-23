@@ -15,13 +15,29 @@ import {
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {extractFormDataAsJson} from "../../utils/formUtils";
+import {login} from "../../api/usersApi";
+import {User} from "../../types/User";
+import {useNavigate} from "react-router-dom";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
 
 export const Login: React.FC = () => {
 
+    const signIn = useSignIn()
+    const navigate = useNavigate();
+
     const handleSubmit: FormEventHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = extractFormDataAsJson(event);
-        console.log(formData);
+        const {email, password} = extractFormDataAsJson(event) as User;
+        const user: User = {email, password};
+        login(user).then(res => {
+            signIn({
+                auth: {
+                    token: res.data.token,
+                    type: "Bearer"
+                }
+            });
+            navigate("/chat")
+        });
     };
 
     return (
