@@ -1,13 +1,14 @@
 import {appConfig} from "../utils/appConfig";
 import {ExtractJwt, Strategy as JwtStrategy} from "passport-jwt";
 import {User} from "../models/user";
+import passport from "passport";
 
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: appConfig.authKey
 }
 
-export const authStrategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
+const authStrategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
     User.findOne({username: jwtPayload.username}, (err, user) => {
         if (err) {
             return done(err, false);
@@ -18,4 +19,6 @@ export const authStrategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
             return done(undefined, false);
         }
     });
-})
+});
+
+passport.use(authStrategy);

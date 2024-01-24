@@ -7,38 +7,62 @@ import {listenToWebsocketConnection} from "./connections/socketConnection";
 import {appConfig} from "./utils/appConfig";
 import {connectDb} from "./connections/dbConnection";
 import {logger} from "./utils/logger";
-import {authStrategy} from "./auth/authStrategy";
 import passport from "passport";
+import "./auth/authStrategy";
 
 import * as websocket from "socket.io";
 import * as http from "http";
 
-const app: Express = express();
-const httpServer: http.Server = require('http').createServer(app);
-const websocketServer: websocket.Server = require('socket.io')(httpServer, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
+class Server {
+
+    private readonly app: Express;
+    private readonly httpServer: http.Server;
+
+    constructor() {
+        this.app = express();
+        this.httpServer = http.createServer(this.app);
+
+        connectDb();
+
+        this.configureAuth();
+        this.configureApi();
+        this.configureWebsocket();
+        this.configureRoutes();
     }
-});
 
-listenToWebsocketConnection(websocketServer);
-app.set('websocketServer', websocketServer);
+    private configureAuth() {
+        this.app.use(passport.initialize());
+    }
 
-connectDb();
+    private configureApi() {
+        this.app.use(bodyParser.urlencoded({extended: true}));
+        this.app.use(bodyParser.json());
+        this.app.use(cors());
+    }
 
-passport.use(authStrategy);
-app.use(passport.initialize());
+    private configureWebsocket() {
+        const websocketServer: websocket.Server = new websocket.Server(this.httpServer, {
+            cors: {
+                origin: "http://localhost:3000",
+                methods: ["GET", "POST"]
+            }
+        });
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
-app.use(cors());
+        listenToWebsocketConnection(websocketServer);
+        this.app.set('websocketServer', websocketServer);
+    }
 
-app.use('/api/messages', messagesRouter);
-app.use('/api/users', usersRouter);
+    private configureRoutes() {
+        this.app.use('/api/messages', messagesRouter);
+        this.app.use('/api/users', usersRouter);
+    }
 
-const applicationPort = appConfig.port;
-httpServer.listen(applicationPort,
-    () => logger.info(`Chat App is listening on port ${applicationPort}`));
+    public start(): void {
+        const applicationPort = appConfig.port;
+        this.httpServer.listen(applicationPort,
+            () => logger.info(`Chat App is listening on port ${applicationPort}`));
+    }
+}
+
+const server: Server = new Server();
+server.start();
