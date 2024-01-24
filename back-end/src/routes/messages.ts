@@ -1,6 +1,16 @@
 import {Router} from "express";
 import {createMessage} from "../controllers/messagesController"
 
-export const router: Router = Router();
+export class MessagesRoutes {
 
-router.post('/', createMessage);
+    readonly router;
+
+    constructor() {
+        this.router = Router();
+        this.routes();
+    }
+
+    private routes() {
+        this.router.post('/', createMessage);
+    }
+}

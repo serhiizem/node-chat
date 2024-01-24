@@ -1,6 +1,16 @@
 import {Router} from "express";
 import {loginUser} from "../controllers/usersController";
 
-export const router: Router = Router();
+export class UsersRoutes {
 
-router.post('/login', loginUser);
+    readonly router;
+
+    constructor() {
+        this.router = Router();
+        this.routes();
+    }
+
+    private routes() {
+        this.router.post('/login', loginUser);
+    }
+}
