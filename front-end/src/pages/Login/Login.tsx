@@ -1,4 +1,6 @@
 import React, {FormEventHandler} from "react";
+import {Link as RouterLink} from "react-router-dom";
+
 import {
     Avatar,
     Box,
@@ -92,7 +94,7 @@ export const Login: React.FC = () => {
                     </Button>
                     <Grid container>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link component={RouterLink} to="/register" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>

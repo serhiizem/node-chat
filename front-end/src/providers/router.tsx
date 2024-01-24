@@ -3,6 +3,7 @@ import {Chat} from "../pages/Chat/Chat";
 import RequireAuth from "@auth-kit/react-router/RequireAuth";
 import {Login} from "../pages/Login/Login";
 import {SocketIoTest} from "../features/SocketIoTest/SocketIoTest";
+import {SignUp} from "../pages/SignUp/SignUp";
 
 export const router = createBrowserRouter([
     {
@@ -12,6 +13,10 @@ export const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login/>
+    },
+    {
+        path: "/register",
+        element: <SignUp/>
     },
     {
         path: "/chat",
