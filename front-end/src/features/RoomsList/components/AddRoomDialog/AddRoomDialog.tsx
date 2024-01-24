@@ -3,9 +3,18 @@ import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogT
 import {AddRoomDialogContext} from "../../../../contexts/AddRoomDialogContext";
 import {extractFormDataAsJson} from "../../../../utils/formUtils";
 
+type MuiOnCloseReason = "backdropClick" | "escapeKeyDown";
+
 export const AddRoomDialog: React.FC = () => {
 
     const {isOpen, closeDialog} = useContext(AddRoomDialogContext);
+
+    const onClose = (event: object, reason: MuiOnCloseReason) => {
+        if (reason && reason === "backdropClick") {
+            return;
+        }
+        closeDialog();
+    }
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -18,7 +27,9 @@ export const AddRoomDialog: React.FC = () => {
     return (
         <Dialog
             open={isOpen}
-            onClose={closeDialog}
+            onClose={onClose}
+            fullWidth={true}
+            maxWidth="xs"
             PaperProps={{component: 'form', onSubmit}}
         >
             <DialogTitle>Create Room</DialogTitle>
