@@ -1,8 +1,8 @@
 import express, {Express} from 'express';
 import cors from "cors";
 import bodyParser from "body-parser";
-import {router as messagesRouter} from "./routes/messages";
-import {router as usersRouter} from "./routes/users";
+import {MessagesRoutes} from "./routes/messages";
+import {UsersRoutes} from "./routes/users";
 import {listenToWebsocketConnection} from "./connections/socketConnection";
 import {appConfig} from "./utils/appConfig";
 import {connectDb} from "./connections/dbConnection";
@@ -53,8 +53,8 @@ class Server {
     }
 
     private configureRoutes() {
-        this.app.use('/api/messages', messagesRouter);
-        this.app.use('/api/users', usersRouter);
+        this.app.use('/api/messages', new MessagesRoutes().router);
+        this.app.use('/api/users', new UsersRoutes().router);
     }
 
     public start(): void {
