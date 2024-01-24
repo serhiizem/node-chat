@@ -1,30 +1,7 @@
-import {IconButton, styled, Toolbar} from "@mui/material";
-import MuiAppBar from "@mui/material/AppBar";
-import {AppBarProps as MuiAppBarProps} from "@mui/material/AppBar/AppBar";
+import {IconButton, Toolbar} from "@mui/material";
 import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import {sidebarWidth} from "./Sidebar";
-
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({theme, open}) => ({
-    transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-    }),
-    ...(open && {
-        width: `calc(100% - ${sidebarWidth}px)`,
-        marginLeft: `${sidebarWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen
-        })
-    })
-}));
+import { ToolbarContainer } from "../../../components/ToolbarContainer/ToolbarContainer";
 
 type ToolBarProps = {
     open: boolean;
@@ -33,7 +10,7 @@ type ToolBarProps = {
 
 export const ToolBar: React.FC<ToolBarProps> = ({open, handleDrawerOpen}) => {
     return (
-        <AppBar position="fixed" open={open}>
+        <ToolbarContainer position="fixed" open={open}>
             <Toolbar>
                 <IconButton
                     color="inherit"
@@ -45,6 +22,6 @@ export const ToolBar: React.FC<ToolBarProps> = ({open, handleDrawerOpen}) => {
                     <MenuIcon/>
                 </IconButton>
             </Toolbar>
-        </AppBar>
+        </ToolbarContainer>
     );
 }

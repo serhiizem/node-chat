@@ -1,8 +1,10 @@
 import React from 'react';
 import {Box, CssBaseline} from "@mui/material";
 import {Main} from "./components/Main";
-import {Sidebar} from "./components/Sidebar";
 import {ToolBar} from "./components/ToolBar";
+import {Outlet} from "react-router-dom";
+import {Sidebar} from "./components/Sidebar";
+import {HeaderContainer} from "../../components/HeaderContainer/HeaderContainer";
 
 export const Chat: React.FC = () => {
 
@@ -27,7 +29,10 @@ export const Chat: React.FC = () => {
                 open={open}
                 handleDrawerClose={handleDrawerClose}
             />
-            <Main open={open}></Main>
+            <Main open={open}>
+                <HeaderContainer />
+                <Outlet/>
+            </Main>
         </Box>
     );
 }

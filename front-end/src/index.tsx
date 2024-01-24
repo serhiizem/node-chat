@@ -6,7 +6,7 @@ import AuthProvider from "react-auth-kit";
 import {RouterProvider} from "react-router-dom";
 import {theme} from "./providers/theme";
 import {store} from "./providers/auth";
-import {router} from "./providers/router";
+import {router} from "./providers/router_dev";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

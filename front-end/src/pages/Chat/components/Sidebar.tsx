@@ -1,8 +1,9 @@
 import React from "react";
-import {Divider, Drawer, IconButton, styled} from "@mui/material";
+import {Divider, Drawer, IconButton} from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import {AddRoomDialogContextProvider} from "../../../contexts/AddRoomDialogContext";
 import {RoomsList} from "../../../features/RoomsList/RoomsList";
+import {HeaderContainer} from "../../../components/HeaderContainer/HeaderContainer";
 
 export const sidebarWidth = 400;
 
@@ -10,15 +11,6 @@ type SidebarProps = {
     open: boolean;
     handleDrawerClose: () => void;
 };
-
-const DrawerHeader = styled('div')(({theme}) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end'
-}));
 
 export const Sidebar: React.FC<SidebarProps> = ({open, handleDrawerClose}) => {
     return (
@@ -35,11 +27,11 @@ export const Sidebar: React.FC<SidebarProps> = ({open, handleDrawerClose}) => {
             anchor="left"
             open={open}
         >
-            <DrawerHeader>
+            <HeaderContainer>
                 <IconButton onClick={handleDrawerClose}>
                     <ChevronLeftIcon/>
                 </IconButton>
-            </DrawerHeader>
+            </HeaderContainer>
             <Divider/>
             <AddRoomDialogContextProvider>
                 <RoomsList/>
