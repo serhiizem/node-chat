@@ -5,9 +5,9 @@ process.env["NODE_CONFIG_DIR"] = `${rootPath}/src/config`;
 const config = require("config");
 
 export const appConfig = {
-    port: config.get("port"),
-    mongoHost: config.get("mongoDbConfig.host"),
-    mongoDbName: config.get("mongoDbConfig.dbName"),
-    authKey: config.get("authSettings.secretOrKey"),
+    port: process.env.APPLICATION_PORT,
+    mongoHost: process.env.DB_HOST,
+    mongoDbName: process.env.DB_NAME,
+    authKey: process.env.AUTH_SECRET_KEY,
     saltRounds: config.get("passwordSettings.saltRounds")
 }

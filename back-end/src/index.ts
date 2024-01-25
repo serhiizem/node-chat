@@ -13,6 +13,7 @@ import "./auth/authStrategy";
 import * as websocket from "socket.io";
 import * as http from "http";
 import {RoomsRoutes} from "./routes/rooms";
+import {validateEnv} from "./utils/validateEnv";
 
 class Server {
 
@@ -66,5 +67,6 @@ class Server {
     }
 }
 
+validateEnv();
 const server: Server = new Server();
 server.start();

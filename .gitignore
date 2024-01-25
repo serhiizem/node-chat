@@ -3,6 +3,8 @@
 **/**/node_modules
 **/**/dist/
 
+**/**/.env
+
 **/**/build/
 ../.idea
 **/**/uploads/
