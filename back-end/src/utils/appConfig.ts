@@ -9,5 +9,5 @@ export const appConfig = {
     mongoHost: config.get("mongoDbConfig.host"),
     mongoDbName: config.get("mongoDbConfig.dbName"),
     authKey: config.get("authSettings.secretOrKey"),
-    saltRounds: config.get('passwordSettings.saltRounds')
+    saltRounds: config.get("passwordSettings.saltRounds")
 }

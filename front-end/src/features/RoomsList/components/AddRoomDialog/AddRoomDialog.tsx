@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {AddRoomDialogContext} from "../../../../contexts/AddRoomDialogContext";
 import {extractFormDataAsJson} from "../../../../utils/formUtils";
+import * as roomsApi from "../../../../api/roomsApi";
 
 type MuiOnCloseReason = "backdropClick" | "escapeKeyDown";
 
@@ -19,9 +20,11 @@ export const AddRoomDialog: React.FC = () => {
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formJson = extractFormDataAsJson(event);
-        const roomName = formJson.roomName;
-        console.log(roomName);
-        closeDialog();
+        const roomName = formJson.roomName as string;
+
+        roomsApi.createRoom({roomName})
+            .then()
+            .finally(() => closeDialog());
     }
 
     return (
@@ -30,7 +33,7 @@ export const AddRoomDialog: React.FC = () => {
             onClose={onClose}
             fullWidth={true}
             maxWidth="xs"
-            PaperProps={{component: 'form', onSubmit}}
+            PaperProps={{component: "form", onSubmit}}
         >
             <DialogTitle>Create Room</DialogTitle>
             <DialogContent>

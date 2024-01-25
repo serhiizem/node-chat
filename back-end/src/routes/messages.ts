@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {createMessage} from "../controllers/messagesController"
+import {createMessage} from "../controllers/messagesController";
 
 export class MessagesRoutes {
 
@@ -11,6 +11,6 @@ export class MessagesRoutes {
     }
 
     private routes() {
-        this.router.post('/', createMessage);
+        this.router.post("/", createMessage);
     }
 }

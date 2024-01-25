@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {Box, List} from "@mui/material";
+import {Box, List, Typography} from "@mui/material";
 import {EnhancedListItemButton} from "../../components/EnhancedListItemButton/EnhancedListItemButton";
 
 import InboxIcon from "@mui/icons-material/MoveToInbox";
@@ -7,14 +7,13 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import MessageIcon from '@mui/icons-material/Message';
 import {AddRoomDialogContext} from "../../contexts/AddRoomDialogContext";
 import {AddRoomDialog} from "./components/AddRoomDialog/AddRoomDialog";
+import {Room} from "../../types/Room";
 
-const sampleRooms = [
-    {
-        roomName: "Sindragossa 25HC"
-    }
-]
+type RoomsListProps = {
+    rooms: Room[]
+};
 
-export const RoomsList: React.FC = () => {
+export const RoomsList: React.FC<RoomsListProps> = ({rooms}) => {
 
     const {openDialog} = useContext(AddRoomDialogContext);
 
@@ -36,11 +35,18 @@ export const RoomsList: React.FC = () => {
                 <EnhancedListItemButton title="Rooms" icon={<InboxIcon/>}/>
 
                 <List component="div" disablePadding>
-                    {sampleRooms.map(room =>
-                        <Box key={room.roomName} sx={{pl: 4}}>
-                            <EnhancedListItemButton title={room.roomName} icon={<MessageIcon/>}/>
-                        </Box>
-                    )}
+                    <Box sx={{pl: 4}}>
+                        {rooms.length === 0
+                            ? <Typography>No rooms yet</Typography>
+                            : rooms.map((room: Room) =>
+                                <EnhancedListItemButton
+                                    key={room.roomName}
+                                    title={room.roomName}
+                                    icon={<MessageIcon/>}
+                                />
+                            )
+                        }
+                    </Box>
                 </List>
             </List>
             <AddRoomDialog/>

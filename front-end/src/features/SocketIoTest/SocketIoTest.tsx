@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {socket} from "../../api/socket";
 import {Box, Button, TextField, Typography} from "@mui/material";
-import {sendMessage} from "../../api/messagesApi";
+import * as messagesApi from "../../api/messagesApi";
 
 export const SocketIoTest = () => {
 
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState<string>("");
     const [chatMessages, setChatMessages] = useState<string[]>([]);
 
     useEffect(() => {
@@ -14,6 +14,14 @@ export const SocketIoTest = () => {
             socket.off("message").off();
         }
     }, []);
+
+    const onMessageSend = () => {
+        messagesApi.sendMessage({
+            text: message,
+            author: "test",
+            roomId: 1
+        }).then(_ => setMessage(""));
+    };
 
     return (
         <Box sx={{
@@ -24,9 +32,7 @@ export const SocketIoTest = () => {
                        value={message}
                        onChange={e => setMessage(e.target.value)}
             />
-            <Button onClick={() => sendMessage(message).then(_ => setMessage(""))}>
-                Send
-            </Button>
+            <Button onClick={onMessageSend}>Send</Button>
 
             {chatMessages.map((m, idx) => <Typography key={idx}>{m}</Typography>)}
         </Box>

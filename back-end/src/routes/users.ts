@@ -11,6 +11,6 @@ export class UsersRoutes {
     }
 
     private routes() {
-        this.router.post('/login', loginUser);
+        this.router.post("/login", loginUser);
     }
 }

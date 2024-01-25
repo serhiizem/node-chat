@@ -29,7 +29,7 @@ export const Login: React.FC = () => {
 
     const handleSubmit: FormEventHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const {email, password} = extractFormDataAsJson(event) as User;
+        const {email, password} = extractFormDataAsJson(event) as any;
         const user: User = {email, password};
         login(user).then(res => {
             signIn({

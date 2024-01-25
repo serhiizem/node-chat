@@ -12,6 +12,7 @@ import "./auth/authStrategy";
 
 import * as websocket from "socket.io";
 import * as http from "http";
+import {RoomsRoutes} from "./routes/rooms";
 
 class Server {
 
@@ -55,6 +56,7 @@ class Server {
     private configureRoutes() {
         this.app.use('/api/messages', new MessagesRoutes().router);
         this.app.use('/api/users', new UsersRoutes().router);
+        this.app.use('/api/rooms', new RoomsRoutes().router);
     }
 
     public start(): void {
