@@ -10,4 +10,4 @@ export const appConfig = {
     mongoDbName: process.env.DB_NAME,
     authKey: process.env.AUTH_SECRET_KEY,
     saltRounds: config.get("passwordSettings.saltRounds")
-}
+};

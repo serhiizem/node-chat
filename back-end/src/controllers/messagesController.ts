@@ -1,25 +1,41 @@
 import {logger} from "../utils/logger";
 import {Message} from "../models/message";
 import mongoose from "mongoose";
+import {Controller} from "./interfaces/controller.interface";
+import {Router} from "express";
 
-export const createMessage = (req, res) => {
-    const {body: {message}} = req;
-    logger.info(`Received message: ${message}`)
+export class MessagesController implements Controller {
 
-    saveMessage(message).then(() => emitMessage(req, res));
-};
+    public readonly path = '/messages';
+    public readonly router = Router();
 
-const saveMessage = (message: string) => {
-    return Message.create({
-        _id: new mongoose.Types.ObjectId(),
-        text: message
-    })
-};
+    constructor() {
+        this.initializeRoutes();
+    }
 
-const emitMessage = (req, res) => {
-    const server = req.app.get('websocketServer');
-    const message = req.body?.message;
+    private initializeRoutes() {
+        this.router.post("/", this.createMessage);
+    }
 
-    server.emit('message', message);
-    res.json(message)
-};
+    private createMessage(req, res) {
+        const {body: {message}} = req;
+        logger.info(`Received message: ${message}`)
+
+        this.saveMessage(message).then(() => this.emitMessage(req, res));
+    };
+
+    private saveMessage(message: string) {
+        return Message.create({
+            _id: new mongoose.Types.ObjectId(),
+            text: message
+        })
+    };
+
+    private emitMessage(req, res) {
+        const server = req.app.get('websocketServer');
+        const message = req.body?.message;
+
+        server.emit('message', message);
+        res.json(message)
+    };
+}
