@@ -8,6 +8,9 @@ export const appConfig = {
     port: process.env.APPLICATION_PORT,
     mongoHost: process.env.DB_HOST,
     mongoDbName: process.env.DB_NAME,
+    mongoUser: process.env.DB_USER,
+    mongoPassword: process.env.DB_PASSWORD,
     authKey: process.env.AUTH_SECRET_KEY,
+    corsOrigin: config.get("corsConfiguration.origin"),
     saltRounds: config.get("passwordSettings.saltRounds")
 };

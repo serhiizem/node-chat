@@ -40,18 +40,18 @@ export class App {
     private configureWebsocket() {
         const websocketServer: websocket.Server = new websocket.Server(this.httpServer, {
             cors: {
-                origin: "http://localhost:3000",
+                origin: appConfig.corsOrigin,
                 methods: ["GET", "POST"]
             }
         });
 
         listenToWebsocketConnection(websocketServer);
-        this.app.set('websocketServer', websocketServer);
+        this.app.set("websocketServer", websocketServer);
     }
 
     private configureControllers(controllers: Controller[]) {
         controllers.forEach((controller: Controller) => {
-            this.app.use('/api', controller.router);
+            this.app.use("/api", controller.router);
         });
     }
 

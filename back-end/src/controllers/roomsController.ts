@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import {Room} from "../models/room";
-import {Controller} from "./interfaces/controller.interface";
 import {Router} from "express";
+import {Controller} from "./interfaces/controller.interface";
+import mongoose from "mongoose";
+import {RoomModel} from "../models/room.model";
 
 export class RoomsController implements Controller {
 
@@ -18,7 +18,7 @@ export class RoomsController implements Controller {
     }
 
     private listRooms(req, res, next) {
-        Room.find({})
+        RoomModel.find({})
             .then(list => {
                 res.json(list);
             })
@@ -28,7 +28,7 @@ export class RoomsController implements Controller {
     }
 
     private createRoom(req, res, next) {
-        Room.create({
+        RoomModel.create({
             _id: new mongoose.Types.ObjectId(),
             roomName: req.body.roomName
         })

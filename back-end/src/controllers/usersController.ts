@@ -1,9 +1,9 @@
-import {User} from "../models/user";
-import bcrypt from "bcrypt";
-import * as jwt from "jsonwebtoken";
-import {Controller} from "./interfaces/controller.interface";
 import {Router} from "express";
+import {Controller} from "./interfaces/controller.interface";
+import * as jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import {appConfig} from "../utils/appConfig";
+import {UserModel} from "../models/user.model";
 
 export class UsersController implements Controller {
 
@@ -20,7 +20,7 @@ export class UsersController implements Controller {
 
     private loginUser(req, res, next) {
         const {email, password} = req.body;
-        User.findOne({email})
+        UserModel.findOne({email})
             .then((user) => {
                 if (user === null) {
                     return res.status(500).send({message: "User not found"});

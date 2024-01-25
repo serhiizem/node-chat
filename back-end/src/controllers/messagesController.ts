@@ -1,8 +1,9 @@
-import {logger} from "../utils/logger";
-import {Message} from "../models/message";
-import mongoose from "mongoose";
-import {Controller} from "./interfaces/controller.interface";
 import {Router} from "express";
+import {Controller} from "./interfaces/controller.interface";
+import mongoose from "mongoose";
+import {MessageModel} from "../models/message.model";
+import {logger} from "../utils/logger";
+import {Message} from "../domain/Message";
 
 export class MessagesController implements Controller {
 
@@ -24,18 +25,18 @@ export class MessagesController implements Controller {
         this.saveMessage(message).then(() => this.emitMessage(req, res));
     };
 
-    private saveMessage(message: string) {
-        return Message.create({
+    private saveMessage(message: Message) {
+        return MessageModel.create({
             _id: new mongoose.Types.ObjectId(),
-            text: message
+            text: message.text
         })
     };
 
     private emitMessage(req, res) {
-        const server = req.app.get('websocketServer');
+        const server = req.app.get("websocketServer");
         const message = req.body?.message;
 
-        server.emit('message', message);
+        server.emit("message", message);
         res.json(message)
     };
 }

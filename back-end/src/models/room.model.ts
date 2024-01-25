@@ -2,13 +2,14 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const MessageSchema = new Schema({
+const RoomSchema = new Schema({
     _id: {
         type: Schema.Types.ObjectId
     },
-    text: {
-        type: String
+    roomName: {
+        type: String,
+        required: true
     }
 }, {versionKey: false});
 
-export const Message = mongoose.model("Message", MessageSchema);
+export const RoomModel = mongoose.model("Room", RoomSchema);

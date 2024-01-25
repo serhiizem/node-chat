@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 import {appConfig} from "../utils/appConfig";
 import {logger} from "../utils/logger";
 
-const mongoDbUrl = `mongodb://mongo:password@${appConfig.mongoHost}/${appConfig.mongoDbName}`;
+const {mongoUser, mongoPassword, mongoHost, mongoDbName} = appConfig;
+const mongoDbUrl = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}/${mongoDbName}`;
 
 export const connectDb = () => {
 
