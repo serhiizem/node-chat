@@ -7,7 +7,7 @@ import {Message} from "../domain/Message";
 
 export class MessagesController implements Controller {
 
-    public readonly path = '/messages';
+    public readonly path = "messages";
     public readonly router = Router();
 
     constructor() {
@@ -15,12 +15,12 @@ export class MessagesController implements Controller {
     }
 
     private initializeRoutes() {
-        this.router.post("/", this.createMessage);
+        this.router.post("/", this.createMessage.bind(this));
     }
 
     private createMessage(req, res) {
-        const {body: {message}} = req;
-        logger.info(`Received message: ${message}`)
+        const message: Message = req.body;
+        logger.info(`Received message: ${message.text}`);
 
         this.saveMessage(message).then(() => this.emitMessage(req, res));
     };
@@ -29,7 +29,7 @@ export class MessagesController implements Controller {
         return MessageModel.create({
             _id: new mongoose.Types.ObjectId(),
             text: message.text
-        })
+        });
     };
 
     private emitMessage(req, res) {
@@ -37,6 +37,6 @@ export class MessagesController implements Controller {
         const message = req.body?.message;
 
         server.emit("message", message);
-        res.json(message)
+        res.json(message);
     };
 }

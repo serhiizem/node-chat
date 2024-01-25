@@ -5,7 +5,7 @@ import {RoomModel} from "../models/room.model";
 
 export class RoomsController implements Controller {
 
-    public readonly path = "/rooms";
+    public readonly path = "rooms";
     public readonly router = Router();
 
     constructor() {
@@ -13,12 +13,12 @@ export class RoomsController implements Controller {
     }
 
     private initializeRoutes() {
-        this.router.get("/", this.listRooms);
-        this.router.post("/", this.createRoom);
+        this.router.get("/", this.listRooms.bind(this));
+        this.router.post("/", this.createRoom.bind(this));
     }
 
     private listRooms(req, res, next) {
-        RoomModel.find({})
+        return RoomModel.find({})
             .then(list => {
                 res.json(list);
             })
@@ -39,6 +39,6 @@ export class RoomsController implements Controller {
             })
             .catch(err => {
                 next(err);
-            })
+            });
     };
 }

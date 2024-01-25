@@ -7,7 +7,7 @@ import {UserModel} from "../models/user.model";
 
 export class UsersController implements Controller {
 
-    public readonly path = '/users';
+    public readonly path = "users";
     public readonly router = Router();
 
     constructor() {
@@ -15,7 +15,7 @@ export class UsersController implements Controller {
     }
 
     private initializeRoutes() {
-        this.router.post("/login", this.loginUser);
+        this.router.post("/login", this.loginUser.bind(this));
     }
 
     private loginUser(req, res, next) {
