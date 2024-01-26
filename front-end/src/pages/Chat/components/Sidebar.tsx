@@ -6,6 +6,7 @@ import {RoomsList} from "../../../features/RoomsList/RoomsList";
 import {HeaderContainer} from "../../../components/HeaderContainer/HeaderContainer";
 import * as roomsApi from "../../../api/roomsApi";
 import {Room} from "../../../types/Room";
+import {socket} from "../../../api/socket";
 
 export const sidebarWidth = 400;
 
@@ -20,6 +21,10 @@ export const Sidebar: React.FC<SidebarProps> = ({open, handleDrawerClose}) => {
 
     useEffect(() => {
         roomsApi.getRooms().then(response => setRooms(response.data));
+        socket.on("new_room", room => setRooms(prevState => [...prevState, room]));
+        return () => {
+            socket.off("new_room");
+        }
     }, []);
 
     return (

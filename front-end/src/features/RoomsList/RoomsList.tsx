@@ -8,6 +8,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import {AddRoomDialogContext} from "../../contexts/AddRoomDialogContext";
 import {AddRoomDialog} from "./components/AddRoomDialog/AddRoomDialog";
 import {Room} from "../../types/Room";
+import {useNavigate} from "react-router-dom";
 
 type RoomsListProps = {
     rooms: Room[]
@@ -15,6 +16,7 @@ type RoomsListProps = {
 
 export const RoomsList: React.FC<RoomsListProps> = ({rooms}) => {
 
+    const navigate = useNavigate();
     const {openDialog} = useContext(AddRoomDialogContext);
 
     return (
@@ -43,6 +45,7 @@ export const RoomsList: React.FC<RoomsListProps> = ({rooms}) => {
                                     key={room.roomName}
                                     title={room.roomName}
                                     icon={<MessageIcon/>}
+                                    onClick={() => navigate(`/chat/room/${room._id}`)}
                                 />
                             )
                         }

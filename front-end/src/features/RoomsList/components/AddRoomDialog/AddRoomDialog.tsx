@@ -22,9 +22,7 @@ export const AddRoomDialog: React.FC = () => {
         const formJson = extractFormDataAsJson(event);
         const roomName = formJson.roomName as string;
 
-        roomsApi.createRoom({roomName})
-            .then()
-            .finally(() => closeDialog());
+        roomsApi.createRoom({roomName}).finally(() => closeDialog());
     }
 
     return (

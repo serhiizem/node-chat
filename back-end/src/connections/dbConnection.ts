@@ -18,7 +18,7 @@ export const connectDb = () => {
     });
 
     dbConnection.on("error", (err) => {
-        logger.error(`connection error: ${err}`);
+        logger.error(`Database connection error: ${err}`);
     });
 }
 
