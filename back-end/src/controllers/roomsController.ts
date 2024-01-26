@@ -42,9 +42,9 @@ export class RoomsController implements Controller {
         }
     };
 
-    private getRoomMessages(req, res, next) {
+    private async getRoomMessages(req, res, next) {
         try {
-            const roomMessages = MessageModel.find({});
+            const roomMessages = await MessageModel.find({});
             res.json(roomMessages);
         } catch (error) {
             next(error);
