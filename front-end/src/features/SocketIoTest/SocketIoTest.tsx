@@ -19,7 +19,7 @@ export const SocketIoTest = () => {
         messagesApi.sendMessage({
             text: message,
             author: "test",
-            roomId: 1
+            roomId: "1"
         }).then(_ => setMessage(""));
     };
 

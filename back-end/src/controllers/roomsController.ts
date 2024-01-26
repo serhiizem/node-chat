@@ -44,7 +44,8 @@ export class RoomsController implements Controller {
 
     private async getRoomMessages(req, res, next) {
         try {
-            const roomMessages = await MessageModel.find({});
+            const {roomId} = req.params;
+            const roomMessages = await MessageModel.find({roomId});
             res.json(roomMessages);
         } catch (error) {
             next(error);

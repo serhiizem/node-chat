@@ -1,4 +1,5 @@
 import {Router} from "express";
+import {Server} from "socket.io";
 import {Controller} from "./interfaces/controller.interface";
 import mongoose from "mongoose";
 import {MessageModel} from "../models/message.model";
@@ -29,15 +30,16 @@ export class MessagesController implements Controller {
     private async saveMessage(message: Message) {
         await MessageModel.create({
             _id: new mongoose.Types.ObjectId(),
-            text: message.text
+            text: message.text,
+            roomId: message.roomId
         });
     };
 
     private async emitMessage(req, res) {
-        const server = req.app.get("websocketServer");
-        const message = req.body?.message;
+        const server: Server = req.app.get("websocketServer");
+        const message: Message = req.body;
 
-        server.emit("message", message);
+        server.to(message.roomId).emit("message", message);
         res.json(message);
     };
 }

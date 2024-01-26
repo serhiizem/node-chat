@@ -8,7 +8,10 @@ const MessageSchema = new Schema({
     },
     text: {
         type: String
-    }
+    },
+    roomId: {
+        type: Schema.Types.ObjectId, ref: "Room", autopopulate: true
+    },
 }, {versionKey: false});
 
 export const MessageModel = mongoose.model("Message", MessageSchema);
