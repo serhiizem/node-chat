@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {KeyboardEvent, useEffect, useState} from "react";
 import {IconButton, InputBase, Paper} from "@mui/material";
 import {Message} from "../../types/Message";
 import {socket} from "../../api/socket";
@@ -25,14 +25,23 @@ export const Room: React.FC = () => {
         };
     }, [roomId]);
 
-    const onMessageSend = async () => {
+    const doDispatchMessage = async () => {
         await messagesApi.sendMessage({
             text: message,
             author: "stub",
             roomId: roomId as string
         });
         setMessage("");
-    };
+    }
+
+    const onMessageSend = async () => await doDispatchMessage();
+
+    const onKeyDown = async (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            await doDispatchMessage();
+        }
+    }
 
     return (
         <React.Fragment>
@@ -45,6 +54,7 @@ export const Room: React.FC = () => {
                     placeholder="Type message"
                     value={message}
                     onChange={e => setMessage(e.target.value)}
+                    onKeyDown={onKeyDown}
                 />
                 <IconButton type="button" sx={{p: "10px"}} onClick={onMessageSend}>
                     <SendIcon/>
