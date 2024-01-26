@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import {appConfig} from "../utils/appConfig";
-import {User} from "../domain/User";
+import {User} from "../types/User";
 
 const Schema = mongoose.Schema;
 

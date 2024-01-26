@@ -3,7 +3,7 @@ import {Controller} from "./interfaces/controller.interface";
 import mongoose from "mongoose";
 import {MessageModel} from "../models/message.model";
 import {logger} from "../utils/logger";
-import {Message} from "../domain/Message";
+import {Message} from "../types/Message";
 
 export class MessagesController implements Controller {
 

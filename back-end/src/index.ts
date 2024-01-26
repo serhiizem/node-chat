@@ -4,6 +4,7 @@ import {UsersController} from "./controllers/usersController";
 import {RoomsController} from "./controllers/roomsController";
 import {MessagesController} from "./controllers/messagesController";
 import {validateEnv} from "./utils/validateEnv";
+import "./connections/dbConnection";
 
 validateEnv();
 

@@ -1,14 +1,13 @@
 import express, {Express} from "express";
 import http from "http";
-import {connectDb} from "./connections/dbConnection";
 import passport from "passport";
 import bodyParser from "body-parser";
 import cors from "cors";
 import * as websocket from "socket.io";
-import {listenToWebsocketConnection} from "./connections/socketConnection";
 import {appConfig} from "./utils/appConfig";
 import {logger} from "./utils/logger";
 import {Controller} from "./controllers/interfaces/controller.interface";
+import {WebSocketConnection} from "./connections/socketConnection";
 
 export class App {
 
@@ -19,12 +18,10 @@ export class App {
         this.app = express();
         this.httpServer = http.createServer(this.app);
 
-        connectDb();
-
         this.configureAuth();
         this.configureApi();
         this.configureWebsocket();
-        this.configureControllers(controllers);
+        this.configureRoutes(controllers);
     }
 
     private configureAuth() {
@@ -45,11 +42,11 @@ export class App {
             }
         });
 
-        listenToWebsocketConnection(websocketServer);
+        new WebSocketConnection(websocketServer);
         this.app.set("websocketServer", websocketServer);
     }
 
-    private configureControllers(controllers: Controller[]) {
+    private configureRoutes(controllers: Controller[]) {
         controllers.forEach((controller: Controller) => {
             this.app.use(`/api/${controller.path}`, controller.router);
         });
