@@ -18,32 +18,31 @@ export class UsersController implements Controller {
         this.router.post("/login", this.loginUser.bind(this));
     }
 
-    private loginUser(req, res, next) {
-        const {email, password} = req.body;
-        UserModel.findOne({email})
-            .then((user) => {
-                if (user === null) {
-                    return res.status(500).send({message: "User not found"});
+    private async loginUser(req, res, next) {
+        try {
+            const {email, password} = req.body;
+            const user = await UserModel.findOne({email});
+            if (user === null) {
+                return res.status(500).send({message: "User not found"});
+            }
+            const encryptedPassword = user.password as string;
+            bcrypt.compare(password, encryptedPassword, (error, result) => {
+                if (error) {
+                    return next(error)
                 }
-                const encryptedPassword = user.password as string;
-                bcrypt.compare(password, encryptedPassword, (error, result) => {
-                    if (error) {
-                        return next(error)
-                    }
 
-                    if (result) {
-                        const token = this.createAuthToken(req, user);
-                        const response = {token: token, user: {_id: user._id, email: user.email}};
+                if (result) {
+                    const token = this.createAuthToken(req, user);
+                    const response = {token: token, user: {_id: user._id, email: user.email}};
 
-                        res.json(response)
-                    } else {
-                        return res.status(500).send({message: "Wrong credentials"});
-                    }
-                })
+                    res.json(response)
+                } else {
+                    return res.status(500).send({message: "Wrong credentials"});
+                }
             })
-            .catch((err) => {
-                next(err)
-            })
+        } catch (error) {
+            next(error);
+        }
     };
 
     private createAuthToken(req, user) {

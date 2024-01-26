@@ -18,21 +18,22 @@ export class MessagesController implements Controller {
         this.router.post("/", this.createMessage.bind(this));
     }
 
-    private createMessage(req, res) {
+    private async createMessage(req, res) {
         const message: Message = req.body;
         logger.info(`Received message: ${message.text}`);
 
-        this.saveMessage(message).then(() => this.emitMessage(req, res));
+        await this.saveMessage(message);
+        await this.emitMessage(req, res);
     };
 
-    private saveMessage(message: Message) {
-        return MessageModel.create({
+    private async saveMessage(message: Message) {
+        await MessageModel.create({
             _id: new mongoose.Types.ObjectId(),
             text: message.text
         });
     };
 
-    private emitMessage(req, res) {
+    private async emitMessage(req, res) {
         const server = req.app.get("websocketServer");
         const message = req.body?.message;
 

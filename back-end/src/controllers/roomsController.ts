@@ -2,6 +2,7 @@ import {Router} from "express";
 import {Controller} from "./interfaces/controller.interface";
 import mongoose from "mongoose";
 import {RoomModel} from "../models/room.model";
+import {MessageModel} from "../models/message.model";
 
 export class RoomsController implements Controller {
 
@@ -15,30 +16,38 @@ export class RoomsController implements Controller {
     private initializeRoutes() {
         this.router.get("/", this.listRooms.bind(this));
         this.router.post("/", this.createRoom.bind(this));
+        this.router.get("/:roomId/messages", this.getRoomMessages.bind(this));
     }
 
-    private listRooms(req, res, next) {
-        return RoomModel.find({})
-            .then(list => {
-                res.json(list);
-            })
-            .catch(err => {
-                next(err);
-            })
+    private async listRooms(req, res, next) {
+        try {
+            const rooms = await RoomModel.find({});
+            res.json(rooms);
+        } catch (error) {
+            next(error);
+        }
     }
 
-    private createRoom(req, res, next) {
-        RoomModel.create({
-            _id: new mongoose.Types.ObjectId(),
-            roomName: req.body.roomName
-        })
-            .then(room => {
-                const server = req.app.get("websocketServer");
-                server.emit("new_room", room);
-                res.json(room);
-            })
-            .catch(err => {
-                next(err);
+    private async createRoom(req, res, next) {
+        try {
+            const room = await RoomModel.create({
+                _id: new mongoose.Types.ObjectId(),
+                roomName: req.body.roomName
             });
+            const server = req.app.get("websocketServer");
+            server.emit("new_room", room);
+            res.json(room);
+        } catch (error) {
+            next(error);
+        }
     };
+
+    private getRoomMessages(req, res, next) {
+        try {
+            const roomMessages = MessageModel.find({});
+            res.json(roomMessages);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
