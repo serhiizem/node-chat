@@ -26,20 +26,15 @@ export class UsersController implements Controller {
                 return res.status(500).send({message: "User not found"});
             }
             const encryptedPassword = user.password as string;
-            bcrypt.compare(password, encryptedPassword, (error, result) => {
-                if (error) {
-                    return next(error)
-                }
+            const hasMatchedHashes = await bcrypt.compare(password, encryptedPassword);
+            if (hasMatchedHashes) {
+                const token = this.createAuthToken(req, user);
+                const response = {token: token, user: {_id: user._id, email: user.email}};
 
-                if (result) {
-                    const token = this.createAuthToken(req, user);
-                    const response = {token: token, user: {_id: user._id, email: user.email}};
-
-                    res.json(response)
-                } else {
-                    return res.status(500).send({message: "Wrong credentials"});
-                }
-            })
+                res.json(response);
+            } else {
+                return res.status(500).send({message: "Wrong credentials"});
+            }
         } catch (error) {
             next(error);
         }
