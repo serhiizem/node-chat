@@ -1,5 +1,5 @@
 import React, {FormEventHandler} from "react";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 
 import {
     Avatar,
@@ -19,7 +19,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {extractFormDataAsJson} from "../../utils/formUtils";
 import {login} from "../../api/usersApi";
 import {User} from "../../types/User";
-import {useNavigate} from "react-router-dom";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 
 export const Login: React.FC = () => {
@@ -27,19 +26,18 @@ export const Login: React.FC = () => {
     const signIn = useSignIn()
     const navigate = useNavigate();
 
-    const handleSubmit: FormEventHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit: FormEventHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const {email, password} = extractFormDataAsJson(event) as any;
         const user: User = {email, password};
-        login(user).then(res => {
-            signIn({
-                auth: {
-                    token: res.data.token,
-                    type: "Bearer"
-                }
-            });
-            navigate("/chat")
+        const authResponse = await login(user);
+        signIn({
+            auth: {
+                token: authResponse.data.token,
+                type: "Bearer"
+            }
         });
+        navigate("/chat");
     };
 
     return (
