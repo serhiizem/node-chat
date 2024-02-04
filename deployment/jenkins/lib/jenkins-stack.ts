@@ -9,16 +9,15 @@ export class JenkinsStack extends Stack {
         super(scope, id, props);
 
         const networkingStack = new Networking(this, "NetworkingConstruct", {
-            maxAzs: 2
+            maxAzs: 1
         });
 
         Tags.of(networkingStack).add("Module", "Networking");
 
-        new JenkinsInstance(this, "DeploymentInstanceConstruct", {
+        const instanceStack = new JenkinsInstance(this, "DeploymentInstanceConstruct", {
             vpc: networkingStack.vpc
         });
 
-        Tags.of(networkingStack).add("Module", "Deployment");
-
+        Tags.of(instanceStack).add("Module", "Deployment");
     }
 }
