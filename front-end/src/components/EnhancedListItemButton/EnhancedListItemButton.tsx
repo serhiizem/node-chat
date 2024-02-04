@@ -4,15 +4,20 @@ import {ListItemButton as MuiListItemButton, ListItemButtonProps, ListItemIcon, 
 type EnhancedListItemButtonProps = ListItemButtonProps & {
     title: string;
     icon: React.ReactNode;
+    isSelected?: boolean;
 }
 
 export const EnhancedListItemButton: React.FC<EnhancedListItemButtonProps> = ({
     title,
     icon,
-    onClick
+    onClick,
+    isSelected = false
 }) => {
     return (
-        <MuiListItemButton onClick={onClick}>
+        <MuiListItemButton
+            onClick={onClick}
+            selected={isSelected}
+        >
             <ListItemIcon>
                 {icon}
             </ListItemIcon>

@@ -70,7 +70,7 @@ export const Room: React.FC = () => {
                             onKeyDown={onKeyDown}
                             multiline
                         />
-                        <IconButton type="button" sx={{p: "10px"}} onClick={onMessageSend}>
+                        <IconButton type="button" sx={{p: "10px"}} disabled={!message} onClick={onMessageSend}>
                             <SendIcon/>
                         </IconButton>
                     </Paper>
