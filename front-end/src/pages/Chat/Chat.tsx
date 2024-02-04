@@ -19,7 +19,7 @@ export const Chat: React.FC = () => {
     };
 
     return (
-        <Box sx={{display: 'flex'}}>
+        <Box sx={{display: "flex"}}>
             <CssBaseline/>
             <ToolBar
                 open={open}

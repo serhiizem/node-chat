@@ -17,7 +17,7 @@ export const ToolBar: React.FC<ToolBarProps> = ({open, handleDrawerOpen}) => {
                     aria-label="open drawer"
                     onClick={handleDrawerOpen}
                     edge="start"
-                    sx={{mr: 2, ...(open && {display: 'none'})}}
+                    sx={{mr: 2, ...(open && {display: "none"})}}
                 >
                     <MenuIcon/>
                 </IconButton>
