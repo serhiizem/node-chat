@@ -1,4 +1,4 @@
-import React, {KeyboardEvent, useEffect, useState} from "react";
+import React, {KeyboardEvent, useEffect, useRef, useState} from "react";
 import {IconButton, InputBase, Paper, styled, Toolbar} from "@mui/material";
 import {Message} from "../../types/Message";
 import {socket} from "../../api/socket";
@@ -14,6 +14,7 @@ const Offset = styled("div")(({theme}) => theme.mixins.toolbar);
 
 export const Room: React.FC = () => {
 
+    const ref = useRef<HTMLDivElement | null>(null);
     const {roomId} = useParams<string>();
     const [message, setMessage] = useState<string>("");
     const [messages, setMessages] = useState<Message[]>([]);
@@ -28,10 +29,12 @@ export const Room: React.FC = () => {
         };
     }, [roomId]);
 
+    useEffect(() => scrollToBottom(), [messages]);
+
     const doDispatchMessage = async () => {
         await messagesApi.sendMessage({
             text: message,
-            author: "stub",
+            author: "temp",
             roomId: roomId as string
         });
         setMessage("");
@@ -44,13 +47,15 @@ export const Room: React.FC = () => {
             e.preventDefault();
             await doDispatchMessage();
         }
-    }
+    };
+
+    const scrollToBottom = () => ref?.current?.scrollIntoView({behavior: "smooth"});
 
     return (
         <React.Fragment>
             {messages.map((message, idx) =>
                 <PaperItem key={idx}>{message.text}</PaperItem>)}
-            <Offset/>
+            <Offset ref={el => ref.current = el}/>
             <ToolbarContainer
                 open
                 position="fixed"
