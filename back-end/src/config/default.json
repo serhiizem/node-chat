@@ -1,6 +1,6 @@
 {
   "corsConfiguration": {
-    "origin": "http://localhost:3000"
+    "origin": "http://localhost:4100"
   },
   "passwordSettings": {
     "saltRounds": 10

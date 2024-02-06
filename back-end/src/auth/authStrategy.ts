@@ -8,17 +8,18 @@ const jwtOptions = {
     secretOrKey: appConfig.authKey
 }
 
-const authStrategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
-    UserModel.findOne({username: jwtPayload.username}, (err, user) => {
-        if (err) {
-            return done(err, false);
-        }
+const authStrategy = new JwtStrategy(jwtOptions, async (jwtPayload, done) => {
+    try {
+        const user = await UserModel.findOne({username: jwtPayload.username});
+
         if (user) {
             return done(undefined, user, jwtPayload);
         } else {
             return done(undefined, false);
         }
-    });
+    } catch (error) {
+        return done(error, false);
+    }
 });
 
 passport.use(authStrategy);
