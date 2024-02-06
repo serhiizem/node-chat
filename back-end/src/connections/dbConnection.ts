@@ -14,11 +14,11 @@ class DbConnection {
         });
 
         const dbConnection = mongoose.connection;
-        dbConnection.once("open", (_) => {
+        dbConnection.once("open", _ => {
             logger.info("Database connected");
         });
 
-        dbConnection.on("error", (err) => {
+        dbConnection.on("error", err => {
             logger.error(`Database connection error: ${err}`);
         });
     }
