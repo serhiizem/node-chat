@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import {MessageModel} from "../models/message.model";
 import {logger} from "../utils/logger";
 import {Message} from "../types/Message";
+import {messagesCounter} from "../utils/metricsClient";
 
 export class MessagesController implements Controller {
 
@@ -22,6 +23,7 @@ export class MessagesController implements Controller {
     private async createMessage(req, res) {
         const message: Message = req.body;
         logger.info(`Received message: ${message.text}`);
+        messagesCounter.inc();
 
         await this.saveMessage(message);
         await this.emitMessage(req, res);
