@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
 
-  mongodb_container:
+  mongodb-container:
     image: mongo:latest
     ports:
       - "27017:27017"
@@ -10,15 +10,39 @@ services:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
 
+  back-end:
+    build: ./back-end
+    env_file:
+      - ./back-end/.env
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./back-end:/app
+    depends_on:
+      - mongodb-container
+
+  front-end:
+    build: ./front-end
+    env_file:
+      - ./front-end/.env
+    ports:
+      - "4100:4100"
+    volumes:
+      - ./front-end:/app
+    depends_on:
+      - back-end
+
   prometheus:
     image: prom/prometheus:latest
     volumes:
       - prometheus_data:/prometheus
-      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
       - "9090:9090"
+    depends_on:
+      - back-end
 
   grafana:
     image: grafana/grafana
