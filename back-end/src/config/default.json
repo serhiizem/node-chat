@@ -1,6 +1,6 @@
 {
   "corsConfiguration": {
-    "origin": "http://localhost:4100"
+    "origin": "http://nginx"
   },
   "passwordSettings": {
     "saltRounds": 10

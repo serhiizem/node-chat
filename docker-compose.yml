@@ -21,6 +21,13 @@ services:
     depends_on:
       - mongodb-container
 
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - back-end
+
   front-end:
     build: ./front-end
     env_file:
@@ -30,7 +37,7 @@ services:
     volumes:
       - ./front-end:/app
     depends_on:
-      - back-end
+      - nginx
 
   prometheus:
     image: prom/prometheus:latest
