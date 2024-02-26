@@ -1,6 +1,6 @@
 {
   "corsConfiguration": {
-    "origin": "http://nginx"
+    "origin": "http://haproxy"
   },
   "passwordSettings": {
     "saltRounds": 10
