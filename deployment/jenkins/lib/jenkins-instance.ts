@@ -1,15 +1,11 @@
 import {Construct} from "constructs";
 import {
-    BlockDeviceVolume,
-    EbsDeviceVolumeType,
-    IMachineImage,
     Instance,
     InstanceClass,
     InstanceSize,
     InstanceType,
     IVpc,
     MachineImage,
-    OperatingSystemType,
     Peer,
     Port,
     SecurityGroup
@@ -29,7 +25,6 @@ export class JenkinsInstance extends Construct {
 
         const jenkinsRole = this.createJenkinsRole();
         const jenkinsSg = this.createSecurityGroup(props.vpc);
-        const linuxMachineImage = this.createMachineImage();
 
         const jenkinsEc2 = new Instance(this, "JenkinsEC2", {
             vpc: props.vpc,
@@ -37,16 +32,8 @@ export class JenkinsInstance extends Construct {
             role: jenkinsRole,
             securityGroup: jenkinsSg,
             instanceType: InstanceType.of(InstanceClass.T2, InstanceSize.MICRO),
-            machineImage: linuxMachineImage,
-            blockDevices: [
-                {
-                    deviceName: "/dev/sda1",
-                    volume: BlockDeviceVolume.ebs(100, {
-                        encrypted: true,
-                        volumeType: EbsDeviceVolumeType.GP3
-                    })
-                }
-            ]
+            machineImage: MachineImage.latestAmazonLinux2(),
+            keyName: "jenkins-key-pair"
         });
 
         const userDataScript = fs.readFileSync("./scripts/ec2-accessibility-test.sh", "utf8");
@@ -61,28 +48,18 @@ export class JenkinsInstance extends Construct {
     private createJenkinsRole(): Role {
         return new Role(this, "RoleJenkins", {
             assumedBy: new ServicePrincipal("ec2.amazonaws.com"),
-            managedPolicies: [
-                ManagedPolicy.fromAwsManagedPolicyName("AmazonSSMFullAccess"),
-            ]
+            managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName("AmazonSSMFullAccess")]
         });
     }
 
     private createSecurityGroup(vpc: IVpc): SecurityGroup {
         const jenkinsSg = new SecurityGroup(this, "SecurityGroupJenkins", {
-            vpc,
-            allowAllOutbound: true
+            vpc, allowAllOutbound: true
         });
 
-        [22, 8080, 9000].forEach(port =>
+        [22, 80, 8080, 9000].forEach(port =>
             jenkinsSg.addIngressRule(Peer.anyIpv4(), Port.tcp(port)));
 
         return jenkinsSg;
-    }
-
-    private createMachineImage(): IMachineImage {
-        return MachineImage.fromSsmParameter(
-            '/aws/service/canonical/ubuntu/server/focal/stable/current/amd64/hvm/ebs-gp2/ami-id',
-            {os: OperatingSystemType.LINUX},
-        );
     }
 }
